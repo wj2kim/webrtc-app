@@ -1,11 +1,17 @@
 {
-  "name": "webrtc-chat",
+  "name": "webrtc-app",
   "version": "1.0.0",
-  "description": "simple webrtc-chat",
-  "main": "index.js",
+  "description": "simple webrtc-application",
+  "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kim Woo Jung",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4",
+    "socket.io": "^2.3.0"
+  }
 }

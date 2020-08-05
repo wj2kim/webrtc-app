@@ -1,4 +1,4 @@
-import React, { useState, useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import io from "socket.io-client";
 import Peer from "simple-peer";
@@ -23,7 +23,63 @@ const Video = styled.video`
 `;
 
 function App() {
-  const [localVideoRef, setLocalVideoRef] = useState("");
+  const [yourID, setYourID] = useState("");
+  const [users, setUsers] = useState({});
+  const [stream, setStream] = useState();
+  const [receivingCall, setReceivingCall] = useState(false);
+  const [caller, setCaller] = useState("");
+  const [callerSignal, setCallerSignal] = useState();
+  const [callAccepted, setCallAccepted] = useState(false);
+
+  const userVideo = useRef();
+  const partnerVideo = useRef();
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io.connect("/");
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+        if (userVideo.current) {
+          userVideo.current.srcObject = stream;
+        }
+      });
+
+    socket.current.on("yourID", (id) => {
+      setYourID(id);
+    });
+    socket.current.on("allUsers", (users) => {
+      setUsers(users);
+    });
+
+    socket.current.on("hey", (data) => {});
+  }, []);
+
+  const callPeer = (id) => {};
+
+  const acceptCall = () => {};
+
+  let UserVideo;
+  if (stream) {
+    UserVideo = <video playsInline muted ref={userVideo} autoPlay />;
+  }
+
+  let PartnerVideo;
+  if (callAccepted) {
+    PartnerVideo = <video playsInline ref={partnerVideo} autoPlay />;
+  }
+
+  let incomingCall;
+  if (receivingCall) {
+    incomingCall = (
+      <div>
+        <h1>{caller} is calling you</h1>
+        <button onClick={acceptCall}>Accept</button>
+      </div>
+    );
+  }
+
   return (
     <section>
       <div>

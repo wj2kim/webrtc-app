@@ -81,21 +81,21 @@ function App() {
   }
 
   return (
-    <section>
-      <div>
+    <Container>
+      <Row>
         {UserVideo}
         {PartnerVideo}
-      </div>
-      <div>
+      </Row>
+      <Row>
         {Object.keys(users).map((key) => {
           if (key === yourID) {
             return null;
           }
           return <button onClick={() => callPeer(key)}>Call {key}</button>;
         })}
-      </div>
-      <div>{incomingCall}</div>
-    </section>
+      </Row>
+      <Row>{incomingCall}</Row>
+    </Container>
   );
 }
 
